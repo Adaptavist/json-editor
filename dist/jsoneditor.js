@@ -4916,7 +4916,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
 
     if(this.options.compact) this.container.className += ' compact';
 
-    this.input = this.theme.getSelectInput(this.enum_options);
+    this.input = this.theme.getSelectInput(this.enum_options, this.enum_display);
     this.theme.setSelectOptions(this.input,this.enum_options,this.enum_display);
 
     if(this.schema.readOnly || this.schema.readonly) {
@@ -5497,8 +5497,9 @@ JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
       this.control = this.theme.getMultiCheckboxHolder(this.controls,this.label,this.description);
     }
     else {
+      var titles = this.schema.options && this.schema.options.enum_titles || [];
       this.input_type = 'select';
-      this.input = this.theme.getSelectInput(this.option_keys);
+      this.input = this.theme.getSelectInput(this.option_keys, titles);
       this.input.multiple = true;
       this.input.size = Math.min(10,this.option_keys.length);
 
@@ -6416,8 +6417,8 @@ JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
   setGridColumnSize: function(el,size) {
     el.className = 'span'+size;
   },
-  getSelectInput: function(options) {
-    var input = this._super(options);
+  getSelectInput: function(options, titles) {
+    var input = this._super(options, titles);
     input.style.width = 'auto';
     input.style.maxWidth = '98%';
     return input;
@@ -6575,8 +6576,8 @@ JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
 });
 
 JSONEditor.defaults.themes.bootstrap3 = JSONEditor.AbstractTheme.extend({
-  getSelectInput: function(options) {
-    var el = this._super(options);
+  getSelectInput: function(options, titles) {
+    var el = this._super(options, titles);
     el.className += 'form-control';
     //el.style.width = 'auto';
     return el;
@@ -6751,8 +6752,8 @@ JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
     el.style.marginBottom = '15px';
     return el;
   },
-  getSelectInput: function(options) {
-    var el = this._super(options);
+  getSelectInput: function(options, titles) {
+    var el = this._super(options, titles);
     el.style.minWidth = 'none';
     el.style.padding = '5px';
     el.style.marginTop = '3px';
